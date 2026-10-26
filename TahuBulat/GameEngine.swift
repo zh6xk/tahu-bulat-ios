@@ -199,22 +199,24 @@ final class GameEngine: ObservableObject {
     
     private func spawnCustomerLoop() {
         Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            let promoLevel = self.upgrades.filter { $0.category == .promosi }.map { $0.level }.reduce(0, +)
-            if self.customers.count < (3 + min(promoLevel, 6)) {
-                let emoji = self.customerEmojis.randomElement() ?? "🏃‍♂️"
-                let newCustomer = Customer(emoji: emoji, xOffset: 200)
-                self.customers.append(newCustomer)
-                
-                let id = newCustomer.id
-                withAnimation(.easeInOut(duration: 2.5)) {
-                    if let idx = self.customers.firstIndex(where: { $0.id == id }) {
-                        self.customers[idx].xOffset = -200
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                let promoLevel = self.upgrades.filter { $0.category == .promosi }.map { $0.level }.reduce(0, +)
+                if self.customers.count < (3 + min(promoLevel, 6)) {
+                    let emoji = self.customerEmojis.randomElement() ?? "🏃‍♂️"
+                    let newCustomer = Customer(emoji: emoji, xOffset: 200)
+                    self.customers.append(newCustomer)
+                    
+                    let id = newCustomer.id
+                    withAnimation(.easeInOut(duration: 2.5)) {
+                        if let idx = self.customers.firstIndex(where: { $0.id == id }) {
+                            self.customers[idx].xOffset = -200
+                        }
                     }
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.6) {
-                    self.customers.removeAll { $0.id == id }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.6) {
+                        self.customers.removeAll { $0.id == id }
+                    }
                 }
             }
         }
