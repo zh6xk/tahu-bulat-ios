@@ -7,15 +7,22 @@ struct MainGameView: View {
     
     var body: some View {
         ZStack {
-            // Bright Bandung Street & Sky Background
+            // Bandung Street & Night Sky Background
             VStack(spacing: 0) {
-                SpriteView(name: "bg_bandung", contentMode: .fill)
-                    .frame(height: 260)
-                    .clipped()
+                ZStack {
+                    LinearGradient(
+                        colors: [Color(hex: "0x0A1128"), Color(hex: "0x1C2541")],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    SpriteView(name: "bg_bandung", contentMode: .fit)
+                }
+                .frame(height: 230)
+                .clipped()
                 
                 // Street & Ground
                 LinearGradient(
-                    colors: [Color(hex: "0xDFDCDE"), Color(hex: "0xB2BABB")],
+                    colors: [Color(hex: "0x2A2D34"), Color(hex: "0x1B1D20")],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -89,38 +96,10 @@ struct MainGameView: View {
                     .transition(.scale.combined(with: .opacity))
                 }
                 
-                // Pickup Truck Stage (Mobil Pikap Tahu Bulat + Akang)
-                ZStack {
-                    // Bayangan Mobil
-                    SpriteView(name: "bayangan_mobil", contentMode: .fit)
-                        .frame(width: 280)
-                        .offset(y: 40)
-                    
-                    // Mobil Pikap
-                    SpriteView(name: "mobil_pickup", contentMode: .fit)
-                        .frame(width: 270)
-                    
-                    // Tenda Mobil
-                    SpriteView(name: "tenda_mobil", contentMode: .fit)
-                        .frame(width: 175)
-                        .offset(x: -28, y: -45)
-                    
-                    // Speaker Toa Blaring Jingle
-                    SpriteView(name: "speaker_toa", contentMode: .fit)
-                        .frame(width: 42)
-                        .offset(x: -85, y: -72)
-                    
-                    // Plang Tahu Bulat
-                    SpriteView(name: "plang_tahubulat", contentMode: .fit)
-                        .frame(width: 76)
-                        .offset(x: -28, y: -68)
-                    
-                    // Akang Penjual Tahu Bulat
-                    SpriteView(name: akangCooking ? "akang_masak1" : "akang_idle", contentMode: .fit)
-                        .frame(width: 68, height: 68)
-                        .offset(x: -18, y: -12)
-                }
-                .frame(height: 155)
+                // Pickup Truck Stage (Mobil Pikap Tahu Bulat Lengkap dengan Roda & Akang)
+                SpriteView(name: akangCooking ? "truk_lengkap_masak" : "truk_lengkap_idle", contentMode: .fit)
+                    .frame(height: 185)
+                    .shadow(color: .black.opacity(0.4), radius: 6, y: 4)
                 
                 // Customer Queue Along the Sidewalk
                 CustomerQueueView(engine: engine)

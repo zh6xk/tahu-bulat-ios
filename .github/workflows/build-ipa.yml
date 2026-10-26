@@ -57,17 +57,17 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
-          tag_name: v1.2.0
-          name: "Tahu Bulat Native iOS v1.2.0 (Authentic Complete Visuals & Audio)"
+          tag_name: v1.3.0
+          name: "Tahu Bulat Native iOS v1.3.0 (Fixed Floating Truck, Wheels & Cohesive Scene)"
           body: |
-            ## Tahu Bulat Native iOS (SwiftUI) v1.2.0
+            ## Tahu Bulat Native iOS (SwiftUI) v1.3.0
             
-            Game Tahu Bulat native iOS dengan visual lengkap dan audio otentik hasil deep reverse engineering APK Own Games:
-            - **Original Visual Assets**: Mobil pikap hitam Tahu Bulat lengkap dengan tenda, speaker TOA, plang nama, dan Akang penjual tahu beranimasi masak.
-            - **Bandung Street Scene**: Background pemandangan kota Bandung yang cerah, aspal jalan, dan antrean pembeli pejalan kaki.
-            - **Authentic Wajan & Tahu**: Wajan penggorengan minyak mendidih emas berbuih + tahu bulat renyah.
-            - **Original Jingle & Voice**: "Tahu bulat... digoreng dadakan... lima ratusan... gurih gurih nyoi / enak!"
-            - **Original SFX & BGM**: Background music legendaris + sfx coin & cooking.
+            Pembaruan visual menyeluruh dan perbaikan layout:
+            - **Fixed Floating Truck**: Mobil pikap kini memiliki roda terpasang sempurna di kedua spakbor fender (x=95 & x=360, cy=185) menapak kokoh di aspal dengan bayangan sasis.
+            - **Cohesive Truck Rig**: Tenda, plang kayu Tahu Bulat, speaker TOA, dan Akang di bak belakang telah dirakit menyatu sesuai scene graph XML resmi Own Games (`df4_c.ogt`).
+            - **Cooking Animation**: Akang kini condong ke depan dan sutil masuk pas ke wajan saat pemain tap untuk menggoreng tahu.
+            - **Smooth Customer Queue**: Pembeli berjalan lancar di trotoar depan mobil pikap.
+            - **Bounded Wajan & Ambient Night**: Memperbaiki void hitam dan membatasi koordinat buih minyak agar tidak mengganggu layout.
             - **100% Native SwiftUI**: Target iOS 16.0+, support 120Hz ProMotion.
             - Format file: `.ipa` (Install via TrollStore, AltStore, Sideloadly, Scarlet).
           files: TahuBulat.ipa

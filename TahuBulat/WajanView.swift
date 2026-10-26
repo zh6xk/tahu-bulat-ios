@@ -46,12 +46,16 @@ struct WajanView: View {
                     .opacity(0.88)
                 
                 // Sizzling Oil Bubbles
-                ForEach(bubbles) { bubble in
-                    Circle()
-                        .fill(Color.white.opacity(bubble.opacity))
-                        .frame(width: bubble.size, height: bubble.size)
-                        .position(x: bubble.x, y: bubble.y)
+                ZStack {
+                    ForEach(bubbles) { bubble in
+                        Circle()
+                            .fill(Color.white.opacity(bubble.opacity))
+                            .frame(width: bubble.size, height: bubble.size)
+                            .position(x: bubble.x, y: bubble.y)
+                    }
                 }
+                .frame(width: 195, height: 195)
+                .clipped()
                 
                 // Fried Crispy Tahu Bulat in Oil
                 HStack(spacing: 12) {
