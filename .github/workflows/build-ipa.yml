@@ -1,0 +1,67 @@
+name: Build Tahu Bulat iOS IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Unsigned IPA
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: |
+          brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: |
+          xcodegen generate
+
+      - name: Build iOS Application (.app)
+        run: |
+          xcodebuild -project TahuBulat.xcodeproj \
+            -scheme TahuBulat \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            clean build
+
+      - name: Package .ipa
+        run: |
+          mkdir -p Payload
+          cp -r build/Build/Products/Release-iphoneos/TahuBulat.app Payload/
+          zip -qr TahuBulat.ipa Payload
+          echo "IPA Size:"
+          ls -lh TahuBulat.ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TahuBulat-iOS-IPA
+          path: TahuBulat.ipa
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        with:
+          tag_name: v1.0.0
+          name: "Tahu Bulat Native iOS v1.0.0"
+          body: |
+            ## Tahu Bulat Native iOS (SwiftUI)
+            
+            Game Tahu Bulat native untuk iOS, di-build langsung via GitHub Actions:
+            - **100% Native SwiftUI** (Support iOS 16, 17, 18, 120Hz ProMotion).
+            - **Haptic Feedback & Sound Synthesis** bawaan iOS.
+            - **Offline Earnings & Dynamic Combo Multiplier**.
+            - Format file: `.ipa` (Bisa di-install pakai TrollStore, AltStore, Sideloadly, atau Scarlet).
+          files: TahuBulat.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
