@@ -5,31 +5,37 @@ struct CustomerQueueView: View {
     
     var body: some View {
         ZStack {
-            // Jalanan Aspal / Trotoar Depan Mobil Pikap
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Color(hex: "0x212F3D").opacity(0.85))
-                .frame(height: 52)
+            // Sidewalk / Trotoar Bandung
+            SpriteView(name: "bg_jalan", contentMode: .fill)
+                .frame(height: 58)
+                .clipped()
                 .overlay {
-                    HStack(spacing: 12) {
-                        ForEach(0..<8) { _ in
-                            Rectangle()
-                                .fill(Color.white.opacity(0.2))
-                                .frame(width: 20, height: 4)
-                        }
-                    }
+                    Color.black.opacity(0.12)
                 }
             
-            // Antrean Pembeli Berjalan
-            HStack {
+            // Antrean Pembeli Berjalan Mendekat ke Mobil Pikap
+            HStack(spacing: 0) {
+                Spacer()
                 ForEach(engine.customers) { customer in
-                    Text(customer.emoji)
-                        .font(.system(size: 32))
-                        .offset(x: customer.xOffset)
-                        .shadow(radius: 2)
+                    VStack(spacing: 0) {
+                        // Dialog Balon Beli
+                        Text("Beli Tahu! 😋")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.black.opacity(0.65))
+                            .clipShape(Capsule())
+                        
+                        SpriteView(name: "customer_walk1", contentMode: .fit)
+                            .frame(width: 44, height: 62)
+                    }
+                    .offset(x: customer.xOffset)
+                    .shadow(radius: 2)
                 }
             }
+            .padding(.horizontal, 10)
         }
-        .frame(height: 52)
-        .padding(.horizontal, 16)
+        .frame(height: 80)
     }
 }
