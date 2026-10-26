@@ -57,16 +57,17 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
-          tag_name: v1.0.0
-          name: "Tahu Bulat Native iOS v1.0.0"
+          tag_name: v1.1.0
+          name: "Tahu Bulat Native iOS v1.1.0 (Authentic Audio & Sprites)"
           body: |
-            ## Tahu Bulat Native iOS (SwiftUI)
+            ## Tahu Bulat Native iOS (SwiftUI) v1.1.0
             
-            Game Tahu Bulat native untuk iOS, di-build langsung via GitHub Actions:
-            - **100% Native SwiftUI** (Support iOS 16, 17, 18, 120Hz ProMotion).
-            - **Haptic Feedback & Sound Synthesis** bawaan iOS.
+            Game Tahu Bulat native iOS lengkap dengan aset audio asli hasil reverse engineer APK:
+            - **Original Jingle & Voice**: "Tahu bulat... digoreng dadakan... lima ratusan... gurih gurih nyoi / enak!"
+            - **Original SFX & BGM**: Background music legendaris + sfx coin & cooking.
+            - **100% Native SwiftUI**: Target iOS 16.0+, support 120Hz ProMotion.
             - **Offline Earnings & Dynamic Combo Multiplier**.
-            - Format file: `.ipa` (Bisa di-install pakai TrollStore, AltStore, Sideloadly, atau Scarlet).
+            - Format file: `.ipa` (Install via TrollStore, AltStore, Sideloadly, Scarlet).
           files: TahuBulat.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
