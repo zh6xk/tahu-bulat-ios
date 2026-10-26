@@ -57,18 +57,15 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
-          tag_name: v1.3.0
-          name: "Tahu Bulat Native iOS v1.3.0 (Fixed Floating Truck, Wheels & Cohesive Scene)"
+          tag_name: v1.3.1
+          name: "Tahu Bulat Native iOS v1.3.1 (Fixed Shop Upgrade Text & Category Tabs)"
           body: |
-            ## Tahu Bulat Native iOS (SwiftUI) v1.3.0
+            ## Tahu Bulat Native iOS (SwiftUI) v1.3.1
             
-            Pembaruan visual menyeluruh dan perbaikan layout:
-            - **Fixed Floating Truck**: Mobil pikap kini memiliki roda terpasang sempurna di kedua spakbor fender (x=95 & x=360, cy=185) menapak kokoh di aspal dengan bayangan sasis.
-            - **Cohesive Truck Rig**: Tenda, plang kayu Tahu Bulat, speaker TOA, dan Akang di bak belakang telah dirakit menyatu sesuai scene graph XML resmi Own Games (`df4_c.ogt`).
-            - **Cooking Animation**: Akang kini condong ke depan dan sutil masuk pas ke wajan saat pemain tap untuk menggoreng tahu.
-            - **Smooth Customer Queue**: Pembeli berjalan lancar di trotoar depan mobil pikap.
-            - **Bounded Wajan & Ambient Night**: Memperbaiki void hitam dan membatasi koordinat buih minyak agar tidak mengganggu layout.
-            - **100% Native SwiftUI**: Target iOS 16.0+, support 120Hz ProMotion.
+            Surgical fix untuk Pasar Upgrade & UI Rendering:
+            - **Fixed Hex Color Alpha Parser Bug**: Memperbaiki fungsi `Color(hex:)` di mana string beralamat prefix `0x` salah di-parse sebagai ARGB 32-bit dengan alpha 0.0 (menyebabkan teks judul, deskripsi, harga, dan tombol menjadi 100% transparan/tidak terlihat).
+            - **Fixed Category Tabs Wrapping**: Tab kategori ("Dapur", "Bumbu", "Promosi", "Cabang") kini dibungkus `ScrollView` horizontal dengan `lineLimit(1)` dan `fixedSize()` sehingga teks tidak terhimpit atau pecah vertikal ("Da pu r").
+            - **Dark Mode Shop Cards**: Mengubah kartu upgrade dari hardcoded putih menjadi kontras gelap (`0x21262D`) selaras dengan tema game dan Dark Mode iOS.
             - Format file: `.ipa` (Install via TrollStore, AltStore, Sideloadly, Scarlet).
           files: TahuBulat.ipa
         env:

@@ -12,32 +12,44 @@ struct ShopView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(hex: "0xF8F9F9").ignoresSafeArea()
+                Color(hex: "0x161B22").ignoresSafeArea()
                 
                 VStack(spacing: 16) {
-                    // Category Picker Tabs
-                    HStack(spacing: 8) {
-                        ForEach(UpgradeCategory.allCases) { cat in
-                            Button {
-                                withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
-                                    selectedCategory = cat
+                    // Category Picker Tabs (Horizontal Scrollable, Never Wrapping)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) {
+                            ForEach(UpgradeCategory.allCases) { cat in
+                                Button {
+                                    withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
+                                        selectedCategory = cat
+                                    }
+                                } label: {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: cat.icon)
+                                        Text(cat.rawValue)
+                                            .font(.system(size: 14, weight: .bold))
+                                            .lineLimit(1)
+                                            .fixedSize(horizontal: true, vertical: false)
+                                    }
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 16)
+                                    .background(
+                                        selectedCategory == cat
+                                        ? LinearGradient(colors: [Color(hex: "0xE67E22"), Color(hex: "0xD35400")], startPoint: .top, endPoint: .bottom)
+                                        : LinearGradient(colors: [Color(hex: "0x21262D"), Color(hex: "0x21262D")], startPoint: .top, endPoint: .bottom)
+                                    )
+                                    .foregroundStyle(selectedCategory == cat ? Color.white : Color(hex: "0x8B949E"))
+                                    .clipShape(Capsule())
+                                    .overlay(
+                                        Capsule()
+                                            .stroke(selectedCategory == cat ? Color.clear : Color(hex: "0x30363D"), lineWidth: 1)
+                                    )
                                 }
-                            } label: {
-                                HStack(spacing: 6) {
-                                    Image(systemName: cat.icon)
-                                    Text(cat.rawValue)
-                                        .font(.system(size: 13, weight: .bold))
-                                }
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 14)
-                                .background(selectedCategory == cat ? Color(hex: "0xE67E22") : Color(hex: "0xEAEDED"))
-                                .foregroundStyle(selectedCategory == cat ? .white : Color(hex: "0x5D6D7E"))
-                                .clipShape(Capsule())
                             }
                         }
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.top, 12)
+                    .padding(.top, 14)
                     
                     // List of Upgrades
                     ScrollView {
@@ -55,6 +67,9 @@ struct ShopView: View {
             }
             .navigationTitle("Pasar Upgrade")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color(hex: "0x161B22"), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     HStack(spacing: 6) {
@@ -62,7 +77,7 @@ struct ShopView: View {
                             .frame(width: 22, height: 22)
                         Text(engine.formatNumber(engine.coins))
                             .font(.system(size: 16, weight: .heavy, design: .rounded))
-                            .foregroundStyle(Color(hex: "0x78281F"))
+                            .foregroundStyle(Color(hex: "0xF1C40F"))
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -71,7 +86,7 @@ struct ShopView: View {
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 22))
-                            .foregroundStyle(Color(hex: "0x95A5A6"))
+                            .foregroundStyle(Color(hex: "0x8B949E"))
                     }
                 }
             }
@@ -93,11 +108,11 @@ struct UpgradeRow: View {
             // Icon
             ZStack {
                 RoundedRectangle(cornerRadius: 14)
-                    .fill(Color(hex: "0xFDEBD0"))
-                    .frame(width: 50, height: 50)
+                    .fill(Color(hex: "0xE67E22").opacity(0.15))
+                    .frame(width: 52, height: 52)
                 Image(systemName: item.icon)
                     .font(.system(size: 24))
-                    .foregroundStyle(Color(hex: "0xD35400"))
+                    .foregroundStyle(Color(hex: "0xE67E22"))
             }
             
             // Description & Level
@@ -105,21 +120,21 @@ struct UpgradeRow: View {
                 HStack(spacing: 6) {
                     Text(item.name)
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundStyle(Color(hex: "0x2C3E50"))
+                        .foregroundStyle(Color.white)
                     
                     Text("Lv.\(item.level)")
                         .font(.system(size: 11, weight: .heavy))
-                        .padding(.horizontal, 6)
+                        .padding(.horizontal, 7)
                         .padding(.vertical, 2)
-                        .background(Color(hex: "0xD4EFDF"))
-                        .foregroundStyle(Color(hex: "0x1E8449"))
+                        .background(Color(hex: "0x238636").opacity(0.35))
+                        .foregroundStyle(Color(hex: "0x3FB950"))
                         .clipShape(Capsule())
                 }
                 
                 Text(item.description)
                     .font(.system(size: 12))
-                    .foregroundStyle(Color(hex: "0x7F8C8D"))
-                    .lineLimit(1)
+                    .foregroundStyle(Color(hex: "0x8B949E"))
+                    .lineLimit(2)
             }
             
             Spacer()
@@ -137,18 +152,21 @@ struct UpgradeRow: View {
                 .background(
                     canAfford
                     ? LinearGradient(colors: [Color(hex: "0xE67E22"), Color(hex: "0xD35400")], startPoint: .top, endPoint: .bottom)
-                    : LinearGradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.2)], startPoint: .top, endPoint: .bottom)
+                    : LinearGradient(colors: [Color(hex: "0x30363D"), Color(hex: "0x21262D")], startPoint: .top, endPoint: .bottom)
                 )
-                .foregroundStyle(canAfford ? .white : Color(hex: "0x7F8C8D"))
+                .foregroundStyle(canAfford ? Color.white : Color(hex: "0x6E7681"))
                 .clipShape(Capsule())
-                .shadow(color: canAfford ? Color(hex: "0xD35400").opacity(0.3) : .clear, radius: 4, y: 2)
+                .shadow(color: canAfford ? Color(hex: "0xD35400").opacity(0.4) : Color.clear, radius: 4, y: 2)
             }
             .disabled(!canAfford)
         }
         .padding(12)
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 18))
-        .shadow(color: Color.black.opacity(0.04), radius: 6, y: 3)
+        .background(Color(hex: "0x21262D"))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color(hex: "0x30363D"), lineWidth: 1)
+        )
     }
     
     private func formatShort(_ num: Double) -> String {
