@@ -57,16 +57,17 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
-          tag_name: v1.3.1
-          name: "Tahu Bulat Native iOS v1.3.1 (Fixed Shop Upgrade Text & Category Tabs)"
+          tag_name: v1.3.2
+          name: "Tahu Bulat Native iOS v1.3.2 (Pixel-Perfect Visual Layout & Authentic Stage)"
           body: |
-            ## Tahu Bulat Native iOS (SwiftUI) v1.3.1
+            ## Tahu Bulat Native iOS (SwiftUI) v1.3.2
             
-            Surgical fix untuk Pasar Upgrade & UI Rendering:
-            - **Fixed Hex Color Alpha Parser Bug**: Memperbaiki fungsi `Color(hex:)` di mana string beralamat prefix `0x` salah di-parse sebagai ARGB 32-bit dengan alpha 0.0 (menyebabkan teks judul, deskripsi, harga, dan tombol menjadi 100% transparan/tidak terlihat).
-            - **Fixed Category Tabs Wrapping**: Tab kategori ("Dapur", "Bumbu", "Promosi", "Cabang") kini dibungkus `ScrollView` horizontal dengan `lineLimit(1)` dan `fixedSize()` sehingga teks tidak terhimpit atau pecah vertikal ("Da pu r").
-            - **Dark Mode Shop Cards**: Mengubah kartu upgrade dari hardcoded putih menjadi kontras gelap (`0x21262D`) selaras dengan tema game dan Dark Mode iOS.
-            - Format file: `.ipa` (Install via TrollStore, AltStore, Sideloadly, Scarlet).
+            Perombakan Visual Pixel-Perfect Layout:
+            - **Seamless Street Stage**: Truk pikap tahu bulat kini duduk kokoh di trotoar background Bandung tanpa melayang, lengkap dengan sasis, roda ganda (X=95, X=360), kanopi tenda, TOA, dan Akang.
+            - **No More Empty Void**: Transisi langit malam Bandung -> trotoar -> jalan aspal marka putih (`bg_jalan`) -> meja dapur hangat bertekstur kayu mahoni solid.
+            - **Authentic Kitchen & Wajan**: Wajan logam besar (`wajan_besar`) duduk di atas kompor pemanas (`wajan_kompor`) dengan genangan minyak mendidih elips emas berkilau, gelembung meletup, dan 4 butir tahu bulat renyah yang membal saat disentuh.
+            - **Arcade Action Dock**: Tombol "PASAR UPGRADE" bergaya arcade warna emas-oranye mengkilap dengan efek 3D bevel.
+            - **Format**: File `.ipa` siap install via TrollStore, AltStore, Sideloadly, atau Scarlet.
           files: TahuBulat.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

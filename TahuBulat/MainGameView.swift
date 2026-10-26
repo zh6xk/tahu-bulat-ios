@@ -7,47 +7,88 @@ struct MainGameView: View {
     
     var body: some View {
         ZStack {
-            // Bandung Street & Night Sky Background
+            // Full Screen Background Layout
             VStack(spacing: 0) {
-                ZStack {
+                // 1. Bandung Night Sky & Street Backdrop
+                ZStack(alignment: .bottom) {
                     LinearGradient(
-                        colors: [Color(hex: "0x0A1128"), Color(hex: "0x1C2541")],
+                        colors: [Color(hex: "0x0B192C"), Color(hex: "0x1E3E62")],
                         startPoint: .top,
                         endPoint: .bottom
                     )
-                    SpriteView(name: "bg_bandung", contentMode: .fit)
+                    
+                    SpriteView(name: "bg_bandung", contentMode: .fill)
+                        .opacity(0.92)
                 }
-                .frame(height: 230)
+                .frame(maxHeight: 330)
                 .clipped()
                 
-                // Street & Ground
-                LinearGradient(
-                    colors: [Color(hex: "0x2A2D34"), Color(hex: "0x1B1D20")],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+                // 2. Asphalt Road with Dashed Centerline
+                ZStack {
+                    SpriteView(name: "bg_jalan", contentMode: .fill)
+                }
+                .frame(height: 38)
+                .clipped()
+                
+                // 3. Kitchen Counter Table Surface (Rich Warm Mahogany Tone)
+                ZStack {
+                    LinearGradient(
+                        colors: [
+                            Color(hex: "0x2C1609"),
+                            Color(hex: "0x200F05"),
+                            Color(hex: "0x140903")
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    
+                    // Subtle Warm Tabletop Texture Line
+                    VStack {
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(hex: "0x8D6E63"), Color(hex: "0x4E342E")],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(height: 3)
+                        Spacer()
+                    }
+                }
                 .ignoresSafeArea()
             }
             .ignoresSafeArea()
             
-            VStack(spacing: 8) {
+            // Foreground Interactive UI & Elements
+            VStack(spacing: 0) {
                 // Top Header Stats Bar
                 HStack(spacing: 12) {
-                    // Coin Counter with Authentic Gold Coin Sprite
+                    // Coin Counter Bar with Golden Accent
                     HStack(spacing: 8) {
                         SpriteView(name: "koin_emas", contentMode: .fit)
-                            .frame(width: 34, height: 34)
+                            .frame(width: 32, height: 32)
                         
                         Text(engine.formatNumber(engine.coins))
-                            .font(.system(size: 28, weight: .black, design: .rounded))
+                            .font(.system(size: 26, weight: .black, design: .rounded))
                             .foregroundStyle(Color(hex: "0x78281F"))
                     }
                     .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 7)
                     .background(
                         Capsule()
-                            .fill(Color(hex: "0xF9E79F"))
-                            .shadow(color: .black.opacity(0.18), radius: 5, y: 3)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(hex: "0xFEF9E7"), Color(hex: "0xF9E79F")],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .shadow(color: .black.opacity(0.3), radius: 5, y: 3)
+                            .overlay(
+                                Capsule()
+                                    .stroke(Color(hex: "0xF39C12"), lineWidth: 1.5)
+                            )
                     )
                     
                     Spacer()
@@ -66,12 +107,12 @@ struct MainGameView: View {
                     .padding(.vertical, 6)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white.opacity(0.92))
-                            .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+                            .fill(Color.white.opacity(0.95))
+                            .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
                     )
                 }
                 .padding(.horizontal, 16)
-                .padding(.top, 8)
+                .padding(.top, 6)
                 
                 // Combo Streak Pill
                 if engine.comboCount > 2 {
@@ -90,23 +131,28 @@ struct MainGameView: View {
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(Color.white.opacity(0.9))
+                    .background(Color.white.opacity(0.92))
                     .clipShape(Capsule())
                     .shadow(radius: 3)
+                    .padding(.top, 4)
                     .transition(.scale.combined(with: .opacity))
                 }
                 
-                // Pickup Truck Stage (Mobil Pikap Tahu Bulat Lengkap dengan Roda & Akang)
-                SpriteView(name: akangCooking ? "truk_lengkap_masak" : "truk_lengkap_idle", contentMode: .fit)
-                    .frame(height: 185)
-                    .shadow(color: .black.opacity(0.4), radius: 6, y: 4)
+                // Pickup Truck Stage (Sitting firmly on the sidewalk)
+                ZStack(alignment: .bottom) {
+                    SpriteView(name: akangCooking ? "truk_lengkap_masak" : "truk_lengkap_idle", contentMode: .fit)
+                        .frame(height: 195)
+                        .shadow(color: .black.opacity(0.45), radius: 8, y: 5)
+                }
+                .padding(.top, 4)
                 
-                // Customer Queue Along the Sidewalk
+                // Pedestrian Customers Queue
                 CustomerQueueView(engine: engine)
+                    .frame(height: 48)
                 
-                Spacer()
+                Spacer(minLength: 10)
                 
-                // Giant Interactive Frying Pan (Wajan) Tap Area
+                // Interactive Giant Frying Pan Stage (Wajan on Kitchen Counter)
                 GeometryReader { geo in
                     ZStack {
                         WajanView(engine: engine)
@@ -115,9 +161,9 @@ struct MainGameView: View {
                         // Floating Numbers Overlay
                         ForEach(engine.floatingNumbers) { float in
                             Text(float.text)
-                                .font(.system(size: 24, weight: .heavy, design: .rounded))
+                                .font(.system(size: 26, weight: .heavy, design: .rounded))
                                 .foregroundStyle(float.color)
-                                .shadow(color: .black.opacity(0.4), radius: 2)
+                                .shadow(color: .black.opacity(0.6), radius: 3, y: 2)
                                 .position(x: float.offset.width, y: float.offset.height)
                                 .opacity(float.opacity)
                         }
@@ -128,36 +174,46 @@ struct MainGameView: View {
                         triggerAkangCookingAnimation()
                     }
                 }
-                .frame(height: 270)
+                .frame(maxHeight: 285)
                 
-                Spacer()
+                Spacer(minLength: 12)
                 
-                // Bottom Control Dock: Pasar Upgrade
-                HStack(spacing: 14) {
+                // Bottom Action Dock: Pasar Upgrade Button
+                HStack {
                     Button {
                         showShop = true
                     } label: {
-                        HStack(spacing: 10) {
+                        HStack(spacing: 12) {
                             Image(systemName: "cart.fill")
-                                .font(.system(size: 20))
+                                .font(.system(size: 22, weight: .bold))
+                            
                             Text("PASAR UPGRADE")
-                                .font(.system(size: 18, weight: .black, design: .rounded))
+                                .font(.system(size: 19, weight: .black, design: .rounded))
+                                .tracking(0.5)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, 16)
                         .background(
                             LinearGradient(
-                                colors: [Color(hex: "0xF39C12"), Color(hex: "0xD35400")],
+                                colors: [
+                                    Color(hex: "0xF5B041"),
+                                    Color(hex: "0xF39C12"),
+                                    Color(hex: "0xD35400")
+                                ],
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
                         )
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 18))
-                        .shadow(color: Color(hex: "0xD35400").opacity(0.45), radius: 8, y: 4)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(Color(hex: "0xFED766"), lineWidth: 2)
+                        )
+                        .shadow(color: Color(hex: "0x78281F").opacity(0.55), radius: 8, y: 5)
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 22)
                 .padding(.bottom, 16)
             }
         }

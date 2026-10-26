@@ -11,11 +11,12 @@ struct WalkingCustomerView: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, 6)
                 .padding(.vertical, 2)
-                .background(Color.black.opacity(0.7))
+                .background(Color.black.opacity(0.75))
                 .clipShape(Capsule())
             
             Text(customer.emoji)
-                .font(.system(size: 38))
+                .font(.system(size: 36))
+                .shadow(color: .black.opacity(0.3), radius: 2, y: 2)
         }
         .offset(x: posX)
         .onAppear {
@@ -31,20 +32,12 @@ struct CustomerQueueView: View {
     
     var body: some View {
         ZStack {
-            // Sidewalk Bandung
-            SpriteView(name: "bg_jalan", contentMode: .fill)
-                .frame(height: 48)
-                .clipped()
-                .overlay {
-                    Color.black.opacity(0.15)
-                }
-            
-            // Antrean Pembeli Berjalan Melewati Depan Truk
+            // Antrean Pembeli Berjalan Melewati Depan Truk (Transparent overlay)
             ForEach(engine.customers) { customer in
                 WalkingCustomerView(customer: customer)
             }
         }
-        .frame(height: 60)
+        .frame(height: 52)
         .clipped()
     }
 }
