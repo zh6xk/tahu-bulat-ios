@@ -39,7 +39,7 @@ jobs:
       - name: Package .ipa
         run: |
           mkdir -p Payload
-          cp -r build/Build/Products/Release-iphoneos/TahuBulat.app Payload/
+          cp -r build/Build/Products/Release-iphoneos/*.app Payload/
           zip -qr TahuBulat.ipa Payload
           echo "IPA Size:"
           ls -lh TahuBulat.ipa
